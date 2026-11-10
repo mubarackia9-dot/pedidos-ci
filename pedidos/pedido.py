@@ -64,7 +64,7 @@ def calcular_total(subtotal, descuento_porcentaje):
         raise DescuentoInvalido(
             f"El descuento debe estar entre 0 y 100; se recibió {descuento_porcentaje}"
         )
-    factor = (Decimal(100) - Decimal(str(descuento_porcentaje))) / Decimal(100)
+    factor = Decimal(1) - Decimal(str(descuento_porcentaje))
     total = Decimal(subtotal) * factor
     return int(total.quantize(Decimal("1"), rounding=ROUND_HALF_UP))
 

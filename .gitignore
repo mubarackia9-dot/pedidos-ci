@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Secretos: nunca subir credenciales al repositorio
+.env
+*.key
+*.pem

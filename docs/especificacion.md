@@ -22,6 +22,8 @@ cercano (0,5 hacia arriba).
 | R9 | Las cantidades deben ser mayores que cero. | cantidad 0 | Error `CantidadInvalida` |
 | R10 | Un pedido válido descuenta las existencias del inventario. | pide 2, hay 10 | quedan 8 |
 | R11 | Si una línea falla la validación, el inventario no cambia en ninguna línea. | línea 1 válida, línea 2 sin existencias | inventario intacto |
+| C1 | Sin variables de entorno, el ambiente es `desarrollo` y no hay base configurada. | sin `APP_ENV` ni `DATABASE_URL` | `desarrollo`, cadena vacía |
+| C2 | El ambiente y la base de datos se leen de variables de entorno. | `APP_ENV=pruebas` | `pruebas` y la URL dada |
 
 ## Configuración por ambiente
 

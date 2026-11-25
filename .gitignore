@@ -8,3 +8,7 @@ __pycache__/
 .env
 *.key
 *.pem
+
+# Reportes de pruebas y cobertura
+.coverage
+reports/

@@ -9,11 +9,13 @@ de versiones, pruebas automatizadas y un entorno reproducible con Docker.
 ```
 pedidos-ci/
 ├── docs/especificacion.md   Comportamiento esperado (escrito antes del código)
-├── tests/test_pedido.py     12 pruebas automáticas (reglas R1–R11)
+├── tests/                   14 pruebas automáticas (R1–R11, C1–C2)
 ├── pedidos/pedido.py        Lógica del pedido
 ├── pedidos/config.py        Configuración por ambiente (variables de entorno)
 ├── Dockerfile               Imagen que corre las pruebas
-├── requirements.txt         Dependencias (pytest)
+├── Jenkinsfile              Pipeline de integración continua
+├── jenkins/                 Servidor Jenkins en Docker (Dockerfile, compose, plugins)
+├── requirements.txt         Dependencias (pytest, pytest-cov)
 ├── .env.example             Plantilla de variables; el .env real no se sube
 └── .gitignore
 ```
@@ -39,6 +41,27 @@ Misma imagen, otro ambiente: solo cambian las variables.
 ```bash
 docker run --rm -e APP_ENV=pruebas pedidos-ci
 ```
+
+## Integración continua con Jenkins
+
+El archivo `Jenkinsfile` define el pipeline. Jenkins corre en Docker y usa el
+motor de Docker del equipo para construir la imagen y ejecutar las pruebas.
+
+```bash
+cd jenkins
+docker compose up -d --build      # levanta Jenkins en http://localhost:8080
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+Etapas del pipeline, en cada rama:
+
+1. **Código**: identifica la rama y el commit.
+2. **Construir imagen**: `docker build -t pedidos-ci:<commit> .`
+3. **Pruebas en contenedor**: `pytest` con reporte JUnit y cobertura.
+4. **Publicar imagen** (solo `main`): etiqueta la imagen aprobada como `latest`.
+
+Ramas: `main` (producción), `develop` (integración), `feature/*` (funcionalidades),
+`hotfix/*` (correcciones urgentes). Las versiones se marcan con etiquetas (`v1.0`).
 
 ---
 

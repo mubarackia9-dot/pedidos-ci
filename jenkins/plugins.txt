@@ -1,0 +1,8 @@
+workflow-aggregator
+git
+github
+github-branch-source
+junit
+pipeline-stage-view
+timestamper
+pipeline-graph-view

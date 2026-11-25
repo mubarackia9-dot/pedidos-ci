@@ -1,0 +1,21 @@
+# Levanta el servidor Jenkins en el equipo local.
+#   docker compose up -d --build
+# Interfaz web: http://localhost:8080
+services:
+  jenkins:
+    build: .
+    image: pedidos-jenkins
+    container_name: jenkins
+    # Se ejecuta como root solo para poder usar el socket de Docker en este
+    # laboratorio local. En producción se usarían agentes dedicados.
+    user: root
+    restart: unless-stopped
+    ports:
+      - "8080:8080"     # interfaz web
+      - "50000:50000"   # conexión de agentes
+    volumes:
+      - jenkins_home:/var/jenkins_home              # configuración y builds persistentes
+      - /var/run/docker.sock:/var/run/docker.sock   # motor de Docker del equipo
+
+volumes:
+  jenkins_home:
